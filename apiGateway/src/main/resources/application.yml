@@ -1,0 +1,27 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: PRODUCT-SERVICE
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/productController/**
+          filters:
+            - JwtAuthFilter
+
+        - id: PAYMENT-SERVICE
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+              - Path=/paymentController/**
+          filters:
+            - JwtAuthFilter
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
